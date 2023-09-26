@@ -4,6 +4,7 @@ import LineChart from './components/Chart/linechart';
 // import Test from './components/Chart/test';
 
 import Header from './components/header'
+import CompanyDetail from "./components/companydetail";
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
     <div>
       <Header onInputSubmit={handleInputSubmit} />
       <LineChart inputValue={inputValue} />
+      <CompanyDetail inputValue={inputValue} />
       {/* <Test/> */}
 
     </div>
