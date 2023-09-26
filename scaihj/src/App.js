@@ -1,26 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import './App.css'; 
+import LineChart from './components/Chart/linechart';
+// import Test from './components/Chart/test';
+
+import Header from './components/header'
+
 
 function App() {
+  const [inputValue, setInputValue] = useState(""); // To store the input value
+
+  // Function to receive input value from Header component
+  const handleInputSubmit = (value) => {
+    // Set the input value in the state
+    setInputValue(value);
+  };
+
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          애국가
-        
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header onInputSubmit={handleInputSubmit} />
+      <LineChart inputValue={inputValue} />
+      {/* <Test/> */}
+
     </div>
   );
 }
-
 export default App;
