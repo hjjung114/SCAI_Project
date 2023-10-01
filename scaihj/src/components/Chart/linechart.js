@@ -8,31 +8,49 @@ import {
   LineElement,
 } from "chart.js";
 
-const LineChart = ({ inputValue }) => {
+const LineChart = ({ inputValue1, inputValue2, inputValue3 }) => {
   const chartRef = useRef(null);
   let chartInstance = useRef(null); // Use a ref to store the chart instance
   const [chartData, setChartData] = useState({
     labels: [],
-    data: [],
+    data1: [],
+    data2: [],
+    data3: [],
   });
+
+  // Track if the initial fetch is done
+  const [initialFetchDone, setInitialFetchDone] = useState(false);
 
   // Define ctx outside of the useEffect
   const ctx = chartRef.current?.getContext("2d");
 
   useEffect(() => {
-    fetch(`/chartdata?name=${inputValue}`)
+    if (!inputValue1 || !inputValue2 || !inputValue3) {
+      return; // Do nothing if any of the input values are empty or initial fetch is done
+    }
+  
+    fetch(`/chartdata?name1=${inputValue1}&name2=${inputValue2}&name3=${inputValue3}`)
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         // Update the state with the fetched data
         setChartData({
           labels: data.Date,
-          data: data.High,
+          data1: data.High[inputValue1],
+          data2: data.High[inputValue2],
+          data3: data.High[inputValue3],
         });
+        setInitialFetchDone(true);
       })
       .catch((error) => {
         console.error("Fetch error:", error);
       });
-  }, [inputValue]);
+  }, [inputValue1, inputValue2, inputValue3, initialFetchDone]);
+
+  useEffect(() => {
+    // Create or update the chart when chartData changes
+    createChart();
+  }, [chartData]);
 
   const createChart = () => {
     Chart.register(
@@ -55,52 +73,61 @@ const LineChart = ({ inputValue }) => {
         datasets: [
           {
             label: "Data 1",
-            data: chartData.data,
-            borderColor: "rgba(255, 99, 132, 1)",
+            data: chartData.data1,
+            borderColor: "#CBCE91",
             backgroundColor: "rgba(255, 99, 132, 0.2)",
-            pointRadius: 5, // 포인트 크기
-            pointBackgroundColor: "rgba(255, 99, 132, 1)", // 포인트 배경색
-            pointBorderColor: "rgba(255, 255, 255, 1)", // 포인트 테두리 색
-            pointHoverRadius: 7, // 호버 시 포인트 크기
-            pointHoverBackgroundColor: "rgba(255, 99, 132, 1)", // 호버 시 포인트 배경색
-            pointHoverBorderColor: "rgba(255, 255, 255, 1)", // 호버 시 포인트 테두리 색
-            fill: false, // 라인 그래프에서 영역 채우기 비활성화
+            pointRadius: 1,
+            pointBackgroundColor: "rgba(255, 99, 132, 1)",
+            pointBorderColor: "rgba(255, 255, 255, 1)",
+            pointHoverRadius: 7,
+            pointHoverBackgroundColor: "rgba(255, 99, 132, 1)",
+            pointHoverBorderColor: "rgba(255, 255, 255, 1)",
+            fill: false,
+          },
+          {
+            label: "Data 2",
+            data: chartData.data2,
+            borderColor: "#CBCE91",
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            pointRadius: 1,
+            pointBackgroundColor: "rgba(255, 99, 132, 1)",
+            pointBorderColor: "rgba(255, 255, 255, 1)",
+            pointHoverRadius: 7,
+            pointHoverBackgroundColor: "rgba(255, 99, 132, 1)",
+            pointHoverBorderColor: "rgba(255, 255, 255, 1)",
+            fill: false,
+          },
+          {
+            label: "Data 3",
+            data: chartData.data3,
+            borderColor: "#CBCE91",
+            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            pointRadius: 1,
+            pointBackgroundColor: "rgba(255, 99, 132, 1)",
+            pointBorderColor: "rgba(255, 255, 255, 1)",
+            pointHoverRadius: 7,
+            pointHoverBackgroundColor: "rgba(255, 99, 132, 1)",
+            pointHoverBorderColor: "rgba(255, 255, 255, 1)",
+            fill: false,
           },
         ],
       },
       options: {
-        //   scales: {
-        //     x: {
-        //       display: true,
-        //     },
-        //     y: {
-        //       beginAtZero: true,
-        //       max: 3000, // 최대값 설정
-        //     },
-        //   },
+        responsive: false,
+        elements: {
+          line: {
+            tension: 0.4,
+          },
+        },
       },
     });
   };
 
-  const initializeChart = () => {
-    createChart();
-  };
-
-  useEffect(() => {
-    // 컴포넌트가 처음 렌더링될 때 차트 초기화
-    initializeChart();
-  }, [chartData]);
-
-  useEffect(() => {
-    return () => {
-      // 컴포넌트가 unmount될 때 차트 파괴
-      if (chartInstance.current) {
-        chartInstance.current.destroy();
-      }
-    };
-  }, []);
-
-  return <canvas ref={chartRef} />;
+  return (
+    <div>
+      <canvas id="myChart" width="600" height="300" ref={chartRef} />
+    </div>
+  );
 };
 
 export default LineChart;
