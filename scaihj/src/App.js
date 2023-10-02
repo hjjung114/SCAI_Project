@@ -8,6 +8,9 @@ import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Unstable_Grid2';
+import Input from "./components/input";
+import LineChart from "./components/Chart/linechart";
+import GaugeChart from "./components/Chart/gaugechart";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -34,6 +37,7 @@ function App() {
     data1: [],
     data2: [],
     data3: [],
+    correlationdata: [],
   });
 
   const onDataFetched = (data) => {
@@ -42,41 +46,36 @@ function App() {
       data1: data.High[inputValue1],
       data2: data.High[inputValue2],
       data3: data.High[inputValue3],
+      correlationdata: data.Correlation,
     });
   };
 
   
   return (
     <Grid container spacing={2}>
-      <Grid xs={8}>
-
+      <Grid container xs={12} sm={9}>
         <Grid xs={12}>
-        <Item>
-          <Header onInputSubmit={handleInputsSubmit} />
-        </Item>
+          {/* <Header onInputSubmit={handleInputsSubmit} /> */}
+          <Input onInputSubmit={handleInputsSubmit} />
         </Grid>
-
         <Grid xs={12}>
-        <Item>
-          <ChartComponent labels={chartData.labels} data={chartData.data1} label="Chart 1" />
-        </Item>
+          {/* <LineChart inputValue1={inputValue1} inputValue2={inputValue2} inputValue3={inputValue3}/> */}
+          <ChartComponent labels={chartData.labels} data={chartData.data1} label={inputValue1} />
         </Grid>
-
         <Grid xs={6}>
-        <Item>
-          <ChartComponent labels={chartData.labels} data={chartData.data2} label="Chart 2" />
-        </Item>
+          <ChartComponent labels={chartData.labels} data={chartData.data2} label={inputValue2} />
         </Grid>
-
         <Grid xs={6}>
-        <Item>
-          <ChartComponent labels={chartData.labels} data={chartData.data3} label="Chart 3" />
-        </Item>
+          <ChartComponent labels={chartData.labels} data={chartData.data3} label={inputValue3} />
         </Grid>
-
       </Grid>
-      <Grid xs={4}>
-        <Item><CompanyDetail inputValue1={inputValue1}/></Item>
+      <Grid container xs={12} sm={3}>
+        <Grid xs={12}>
+          <Item><CompanyDetail inputValue1={inputValue1}/></Item>
+        </Grid>
+        <Grid xs={12}>
+          <Item><GaugeChart data={chartData.correlationdata} var1={inputValue2} var2={inputValue3}/></Item>
+        </Grid>
       </Grid>
 
       <ChartData

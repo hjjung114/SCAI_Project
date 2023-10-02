@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 
+import Table from '@mui/material/Table';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
+import { TableHead } from "@mui/material";
+
 const CompanyDetail = ({ inputValue1 }) => {
 
   const [data, setData] = useState(null);
-  const [initialFetchDone, setInitialFetchDone] = useState(false); // Track if the initial fetch is done
-
 
   useEffect(() => {
 
-    if (!inputValue1 || initialFetchDone) {
+    if (!inputValue1) {
       return; // Do nothing if inputValue1 is empty or initial fetch is done
     }
-
 
     fetch(`/companydetail?name=${inputValue1}`)
       .then((response) => response.json())
@@ -29,24 +32,43 @@ const CompanyDetail = ({ inputValue1 }) => {
     return new Intl.NumberFormat("en-US").format(number);
   };
 
+
   return (
-    <div className='App'>
-      <h3>Company Detail</h3>
-      <div>
-        {/* 삼항연산자 */}
+    <div className='Companydetail'>
+      {/* <h3>Company Detail</h3> */}
         {data === null ? (
           // fetch가 완료되지 않았을 경우에 대한 처리
           <p></p>
         ) : (
-          <div>
-            <p>{data.stockCode} / {data.marketName} </p>
-            <p>종목명: {data.stockName}</p>
-            <p>시가총액: {formatNumber(data.marketCap)}</p>
-            <p>상장 주식 수: {formatNumber(data.listedStocks)}</p>
-            
-          </div>
+          <TableContainer>
+            <Table aria-label="dense spanning table">
+              <TableHead>
+                <TableRow>
+                  <TableCell padding="none" align="center" colSpan={2}>
+                    <h3>{data.stockName}</h3>
+                    <p>{data.stockCode} / {data.marketName} </p>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell padding="none" align="center">
+                    시가총액
+                  </TableCell>
+                  <TableCell padding="none" align="right">
+                    <p>{formatNumber(data.marketCap)}</p>
+                  </TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell padding="none" align="center">
+                    상장 주식 수
+                  </TableCell>
+                  <TableCell padding="none" align="right">
+                    <p>{formatNumber(data.listedStocks)}</p>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+            </Table>
+          </TableContainer>
         )}
-      </div>
     </div>
   );
 };

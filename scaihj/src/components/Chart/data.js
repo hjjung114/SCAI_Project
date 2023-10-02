@@ -1,4 +1,12 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
+const fetchData = (inputValue1, inputValue2, inputValue3) => {
+  return fetch(`/chartdata?name1=${inputValue1}&name2=${inputValue2}&name3=${inputValue3}`)
+    .then((response) => response.json())
+    .catch((error) => {
+      console.error("Fetch error:", error);
+    });
+};
 
 const ChartData = ({ inputValue1, inputValue2, inputValue3, onDataFetched }) => {
   useEffect(() => {
@@ -6,14 +14,9 @@ const ChartData = ({ inputValue1, inputValue2, inputValue3, onDataFetched }) => 
       return; // Do nothing if any of the input values are empty
     }
 
-    fetch(`/chartdata?name1=${inputValue1}&name2=${inputValue2}&name3=${inputValue3}`)
-      .then((response) => response.json())
+    fetchData(inputValue1, inputValue2, inputValue3)
       .then((data) => {
-        console.log(data);
         onDataFetched(data);
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error);
       });
   }, [inputValue1, inputValue2, inputValue3]);
 
