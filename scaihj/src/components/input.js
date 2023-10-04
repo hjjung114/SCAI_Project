@@ -14,6 +14,7 @@ export default function Input({ onInputSubmit }) {
     const [inputValue2, setInputValue2] = useState(""); // Manage the input value in state
     const [inputValue3, setInputValue3] = useState(""); // Manage the input value in state
   
+    // inputValue에는 옵션을 집어 넣음. option
     const handleSubmit = () => {
         // Call the onInputSubmit function passed as a prop and pass the input value
         onInputSubmit(inputValue1, inputValue2, inputValue3);

@@ -101,6 +101,19 @@ const GaugeChart = ({data, var1, var2}) => {
           plugins: {
             legend: {
                 display: false
+            },
+            datalabels: {
+              // backgroundColor: {borderColor},
+              // borderColor: borderColor,
+              borderWidth: 1,
+              borderRadius: 5,
+              font: {
+                weight: 'bold'
+              },
+              padding: 5,
+              // formatter : function(data, context) {
+              //   return 
+              // }
             }
           }
         },

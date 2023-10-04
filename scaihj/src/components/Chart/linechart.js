@@ -125,7 +125,7 @@ const LineChart = ({ inputValue1, inputValue2, inputValue3 }) => {
 
   return (
     <div>
-      <canvas id="myChart" width="600" height="300" ref={chartRef} />
+      <canvas id="myChart" width="1800" height="900" ref={chartRef} />
     </div>
   );
 };

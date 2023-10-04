@@ -59,7 +59,7 @@ function App() {
           <Input onInputSubmit={handleInputsSubmit} />
         </Grid>
         <Grid xs={12}>
-          {/* <LineChart inputValue1={inputValue1} inputValue2={inputValue2} inputValue3={inputValue3}/> */}
+          <LineChart inputValue1={inputValue1} inputValue2={inputValue2} inputValue3={inputValue3}/>
           <ChartComponent labels={chartData.labels} data={chartData.data1} label={inputValue1} />
         </Grid>
         <Grid xs={6}>
