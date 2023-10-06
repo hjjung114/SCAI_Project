@@ -1,24 +1,25 @@
+// data.js
+
 import { useEffect, useState } from "react";
 
-const fetchData = (inputValue1, inputValue2, inputValue3) => {
-  return fetch(`/chartdata?name1=${inputValue1}&name2=${inputValue2}&name3=${inputValue3}`)
-    .then((response) => response.json())
-    .catch((error) => {
-      console.error("Fetch error:", error);
-    });
-};
+const ChartData = ({ onDataFetched }) => {
+  const [dataFetched, setDataFetched] = useState(false);
 
-const ChartData = ({ inputValue1, inputValue2, inputValue3, onDataFetched }) => {
   useEffect(() => {
-    if (!inputValue1 || !inputValue2 || !inputValue3) {
-      return; // Do nothing if any of the input values are empty
+    if (!dataFetched) { // 데이터를 이미 가져왔다면 다시 가져오지 않도록
+      fetch(`/chartdata`)
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          // 데이터를 부모 컴포넌트로 전달
+          onDataFetched(data);
+          setDataFetched(true); // 데이터를 가져왔음을 표시
+        })
+        .catch((error) => {
+          console.error("Fetch error:", error);
+        });
     }
-
-    fetchData(inputValue1, inputValue2, inputValue3)
-      .then((data) => {
-        onDataFetched(data);
-      });
-  }, [inputValue1, inputValue2, inputValue3]);
+  }, [dataFetched, onDataFetched]);
 
   return null;
 };

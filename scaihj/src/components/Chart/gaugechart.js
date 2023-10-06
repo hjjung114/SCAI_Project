@@ -93,7 +93,6 @@ const GaugeChart = ({data, var1, var2}) => {
             borderRadius: 10, //rounded edge
             needleValue: value1 !== null ? data[0] : data[1]
             // needleValue: value1 !== null ? value1 : initialNeedleValue
-
           }],
         },
         options: {
