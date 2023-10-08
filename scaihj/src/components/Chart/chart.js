@@ -9,7 +9,6 @@ import {
 } from "chart.js";
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
-import { createTheme, ThemeProvider } from '@mui/material'; // Import createTheme and ThemeProvider
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 
@@ -18,18 +17,6 @@ const ChartComponent = ({labels, data1, data2, onChangePeriod }) => {
   const chartRef = useRef(null);
   const [period, setPeriod] = useState('month');
   const matches = useMediaQuery("(min-width:600px)");
-
-  // const theme = createTheme({
-  //   components: {
-  //     // Name of the component
-  //     MuiButtonBase: {
-  //       defaultProps: {
-  //         // The props to change the default for.
-  //         disableRipple: true, // No more ripple, on the whole application 💣!
-  //       },
-  //     },
-  //   },
-  // });
 
   // Calculate the middle index of the labels array
   const middleIndex = Math.floor(labels.length / 2);
@@ -44,16 +31,16 @@ const ChartComponent = ({labels, data1, data2, onChangePeriod }) => {
 
   let chartInstance = useRef(null);
 
+  //Separate function to avoid re-rendering when period is updated
   useEffect(() => {
     onChangePeriod(period);
   }, [period]);
 
-
   useEffect(() => {
 
     onChangePeriod(period);
 
-    if (chartRef.current) { // chartRef가 null이 아닐 때만 실행
+    if (chartRef.current) {
       Chart.register(
         LineController,
         CategoryScale,
@@ -61,7 +48,6 @@ const ChartComponent = ({labels, data1, data2, onChangePeriod }) => {
         PointElement,
         LineElement
       );
-      console.log(1)
   
       if (chartInstance.current) {
         chartInstance.current.destroy();
@@ -171,22 +157,22 @@ const ChartComponent = ({labels, data1, data2, onChangePeriod }) => {
         orientation={`${matches ? `horizontal` : `vertical`}`}
         size={`${matches ? `large` : `small`}`}
       >
-      <ToggleButton value="week" aria-label="left aligned">
+      <ToggleButton value="week">
         Week
       </ToggleButton>
-      <ToggleButton value="month" aria-label="centered">
+      <ToggleButton value="month">
         month
       </ToggleButton>
-      <ToggleButton value="quarter" aria-label="right aligned">
+      <ToggleButton value="quarter">
         Quarter
       </ToggleButton>
-      <ToggleButton value="year" aria-label="right aligned">
+      <ToggleButton value="year">
         Year
       </ToggleButton>
-      <ToggleButton value="3year" aria-label="right aligned">
+      <ToggleButton value="3year">
         3Year
       </ToggleButton>
-      <ToggleButton value="5year" aria-label="right aligned">
+      <ToggleButton value="5year">
         5Year
       </ToggleButton>
     </ToggleButtonGroup>
