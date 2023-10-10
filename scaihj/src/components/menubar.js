@@ -9,7 +9,7 @@ import AdbIcon from '@mui/icons-material/Adb';
 
 import { Link } from "react-router-dom";
 
-const pages = ['HOME', 'ABOUT', 'PAGE'];
+const pages = ['home', 'about', 'page'];
 
 export default function MenuBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
