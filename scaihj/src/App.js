@@ -24,6 +24,7 @@ function App() {
       </Grid>
       <Routes>
         <Route path="/" element={<HomePage />} />
+
         <Route path="/home" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/page" element={<NewPage />} />
