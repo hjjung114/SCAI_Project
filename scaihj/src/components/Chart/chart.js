@@ -208,7 +208,7 @@ const  ChartComponent = ({selectedChart}) => {
           {selectedChart === 'chart' && (
             <div>
               <ToggleButtonGroup
-                value={period}
+                value={period} //value vs inputvalue
                 exclusive
                 onChange={(event, newValue) => setPeriod(newValue)}
                 aria-label="text alignment"
@@ -225,7 +225,10 @@ const  ChartComponent = ({selectedChart}) => {
             </div>
           )}
           {selectedChart === 'KOSPI' && (
-            <canvas ref={KOSPIchartRef} />
+            <div style={{position:"relative", height:"40vh"}}>
+              <h3>KOSPI</h3>
+              <canvas ref={KOSPIchartRef} />
+            </div>
           )}
           
         </div>
