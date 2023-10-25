@@ -7,12 +7,14 @@ import {
   LinearScale,
   PointElement,
   LineElement,
+  Legend,
 } from "chart.js";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
+import zoomPlugin from "chartjs-plugin-zoom";
 
 const ChartComponent = ({ selectedChart }) => {
   let chartInstance = useRef(null);
@@ -25,31 +27,16 @@ const ChartComponent = ({ selectedChart }) => {
     data1: [],
     data2: [],
     data3: [],
-    KOSPI: [],
+    // KOSPI: [],
   });
 
   const matches = useMediaQuery("(min-width:600px)");
 
-  const periods = ["week", "month", "quarter", "year", "3year", "5year"];
+  // const periods = ["week", "month", "quarter", "year", "3year", "5year"];
 
   // Calculate the middle index of the labels array
   const middleIndex = Math.floor(chartData.labels.length / 2);
   const middleLabel = chartData.labels[middleIndex];
-
-  const dash = (chartRef) =>
-    chartRef.chart.data.labels[chartRef.p0DataIndex] >= middleLabel
-      ? [6, 6]
-      : [6, 0];
-
-  const getBorderColor1 = (context) =>
-    context.chart.data.labels[context.p0DataIndex] >= middleLabel
-      ? "#C0C0C0"
-      : "rgba(44, 159, 237, 0.75)";
-
-  const getBorderColor2 = (context) =>
-    context.chart.data.labels[context.p0DataIndex] >= middleLabel
-      ? "rgba(255, 99, 132, 0.5)"
-      : "#CBCE91";
 
   useEffect(() => {
     fetch(`/chartdata?period=${period}`)
@@ -74,13 +61,14 @@ const ChartComponent = ({ selectedChart }) => {
     if (selectedChart === "chart" && chartRef.current) {
       createChart();
     }
-    if (selectedChart === "KOSPI" && KOSPIchartRef.current) {
-      createKOSPI();
-    }
+    // if (selectedChart === "KOSPI" && KOSPIchartRef.current) {
+    //   createKOSPI();
+    // }
   }, [chartData]);
 
   const createChart = () => {
     Chart.register(
+      Legend,
       LineController,
       CategoryScale,
       LinearScale,
@@ -101,13 +89,14 @@ const ChartComponent = ({ selectedChart }) => {
           {
             label: "삼성전자",
             data: chartData.data1,
-            borderColor: "rgba(44, 159, 237, 0.75)",
-            backgroundColor: "#C0C0C0",
+            borderColor: "rgba(44, 159, 237, 0.5)",
+            borderWidth: 1,
+            backgroundColor: "rgba(44, 159, 237, 0.5)",
             pointRadius: 0,
             pointHitRadius: 8,
             pointHoverRadius: 3,
-            pointHoverBackgroundColor: "rgba(255, 99, 132, 1)",
-            pointHoverBorderColor: "rgba(255, 255, 255, 1)",
+            pointHoverBackgroundColor: "rgba(44, 159, 237, 0.5)",
+            pointHoverBorderColor: "rgba(44, 159, 237, 0.5)",
             fill: false,
             yAxisID: "y",
           },
@@ -115,47 +104,52 @@ const ChartComponent = ({ selectedChart }) => {
             label: "이오테크닉스",
             data: chartData.data2,
             borderColor: "#CBCE91",
+            borderWidth: 2,
             // segment: {
             //   borderDash: (context) => dash(context),
             //   borderColor: (context) => getBorderColor2(context),
             // },
-            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            backgroundColor: "#CBCE91",
             pointRadius: 0,
             pointHitRadius: 8,
             // pointBackgroundColor: "rgba(255, 99, 132, 1)",
             // pointBorderColor: "rgba(255, 255, 255, 1)",
             pointHoverRadius: 3,
-            pointHoverBackgroundColor: "rgba(255, 99, 132, 1)",
-            pointHoverBorderColor: "rgba(255, 255, 255, 1)",
+            pointHoverBackgroundColor: "#CBCE91",
+            pointHoverBorderColor: "#CBCE91",
             fill: false,
             yAxisID: "y1",
           },
           {
-            label: "이오테크닉스_predict",
+            label: "AI_이오테크닉스",
             data: chartData.data3,
-            borderColor: "#rgba(255, 99, 132, 0.5)",
+            borderColor: "rgba(125, 99, 132, 0.9)",
+            borderWidth: 2,
             segment: {
               borderDash: [6, 6],
             },
-            backgroundColor: "rgba(255, 99, 132, 0.2)",
+            // backgroundColor: ,
             pointRadius: 0,
             pointHitRadius: 8,
             // pointBackgroundColor: "rgba(255, 99, 132, 1)",
             // pointBorderColor: "rgba(255, 255, 255, 1)",
             pointHoverRadius: 3,
-            pointHoverBackgroundColor: "rgba(255, 99, 132, 1)",
-            pointHoverBorderColor: "rgba(255, 255, 255, 1)",
+            pointHoverBackgroundColor: "rgba(125, 99, 132, 0.9)",
+            pointHoverBorderColor: "rgba(125, 99, 132, 0.9)",
             fill: false,
             yAxisID: "y1",
           },
         ],
       },
       options: {
+        layout: {
+          padding: 35,
+        },
         responsive: true,
         // maintainAspectRatio: false,
         elements: {
           line: {
-            tension: 0.4,
+            tension: 0.2,
           },
         },
         scales: {
@@ -175,76 +169,106 @@ const ChartComponent = ({ selectedChart }) => {
           },
         },
         plugins: {
-          legend: { position: "bottom" },
+          legend: {
+            display: "true",
+            position: "bottom",
+            labels: {
+              usePointStyle: true, //<-- 동그라미 모양
+              // pointStyleWidth: 10,
+            },
+          },
+          zoom: {
+            limits: {
+              // x: { min: 0, max: "2023-09-14" },
+              y1: { min: 40000, max: 200000 },
+              y: { min: 50000, max: 75000 },
+            },
+            zoom: {
+              wheel: {
+                enabled: true,
+                speed: 0.01,
+              },
+              drag: {
+                enabled: true,
+              },
+              // pinch: {
+              //   enabled: true,
+              // },
+            },
+          },
         },
       },
     });
   };
 
-  const createKOSPI = () => {
-    Chart.register(
-      LineController,
-      CategoryScale,
-      LinearScale,
-      PointElement,
-      LineElement
-    );
+  // const createKOSPI = () => {
+  //   Chart.register(
+  //     LineController,
+  //     CategoryScale,
+  //     LinearScale,
+  //     PointElement,
+  //     LineElement
+  //   );
 
-    if (KOSPIchartInstance.current) {
-      KOSPIchartInstance.current.destroy();
-    }
+  //   if (KOSPIchartInstance.current) {
+  //     KOSPIchartInstance.current.destroy();
+  //   }
 
-    KOSPIchartInstance.current = new Chart(KOSPIchartRef.current, {
-      type: "line",
-      data: {
-        labels: chartData.labels,
-        datasets: [
-          {
-            label: "KOSPI",
-            data: chartData.KOSPI,
-            borderColor: "#D50000",
-            // segment: {
-            //   borderDash: context => dash(context),
-            //   borderColor: context => getBorderColor1(context),
-            // },
-            // backgroundColor: "#C0C0C0",
-            pointRadius: 0,
-            pointHitRadius: 5,
-            // pointBackgroundColor: "rgba(255, 99, 132, 1)",
-            // pointBorderColor: "rgba(255, 255, 255, 1)",
-            pointHoverRadius: 0,
-            pointHoverBackgroundColor: "rgba(255, 99, 132, 1)",
-            pointHoverBorderColor: "rgba(255, 255, 255, 1)",
-            fill: false,
-            yAxisID: "y",
-          },
-        ],
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        elements: {
-          line: {
-            tension: 0.2,
-          },
-        },
-        scales: {
-          y: {
-            type: "linear",
-            display: true,
-            position: "left",
-          },
-          x: {
-            // ticks : {maxTicksLimit : 5}
-            display: false,
-          },
-        },
-        plugins: {
-          legend: { position: "bottom" },
-        },
-      },
-    });
-  };
+  //   KOSPIchartInstance.current = new Chart(KOSPIchartRef.current, {
+  //     type: "line",
+  //     data: {
+  //       labels: chartData.labels,
+  //       datasets: [
+  //         {
+  //           label: "KOSPI",
+  //           data: chartData.KOSPI,
+  //           borderColor: "#D50000",
+  //           borderWidth: 2,
+  //           // segment: {
+  //           //   borderDash: context => dash(context),
+  //           //   borderColor: context => getBorderColor1(context),
+  //           // },
+  //           // backgroundColor: "#C0C0C0",
+  //           pointRadius: 0,
+  //           pointHitRadius: 5,
+  //           // pointBackgroundColor: "rgba(255, 99, 132, 1)",
+  //           // pointBorderColor: "rgba(255, 255, 255, 1)",
+  //           pointHoverRadius: 0,
+  //           pointHoverBackgroundColor: "rgba(255, 99, 132, 1)",
+  //           pointHoverBorderColor: "rgba(255, 255, 255, 1)",
+  //           fill: false,
+  //           yAxisID: "y",
+  //         },
+  //       ],
+  //     },
+  //     options: {
+  //       plugins: {
+  //         legend: {
+  //           display: false,
+  //         },
+  //       },
+  //       responsive: true,
+  //       maintainAspectRatio: false,
+  //       elements: {
+  //         line: {
+  //           tension: 0.2,
+  //         },
+  //       },
+  //       scales: {
+  //         y: {
+  //           type: "linear",
+  //           display: true,
+  //           position: "left",
+  //         },
+  //         x: {
+  //           // ticks : {maxTicksLimit : 5}
+  //           display: false,
+  //         },
+  //       },
+  //     },
+  //   });
+  //   Chart.register(zoomPlugin);
+  // };
 
   return (
     <>
@@ -252,11 +276,11 @@ const ChartComponent = ({ selectedChart }) => {
         <div>
           {selectedChart === "chart" && (
             <div>
-              <ToggleButtonGroup
-                value={period} //value vs inputvalue
-                exclusive
-                onChange={(event, newValue) => setPeriod(newValue)}
-                aria-label="text alignment"
+              {/* <ToggleButtonGroup
+                  value={period} //value vs inputvalue
+                  exclusive
+                  onChange={(event, newValue) => setPeriod(newValue)}
+                  aria-label="text alignment"
                 orientation={`${matches ? `horizontal` : `vertical`}`}
                 size={`${matches ? `large` : `small`}`}
               >
@@ -265,16 +289,16 @@ const ChartComponent = ({ selectedChart }) => {
                     {periodOption}
                   </ToggleButton>
                 ))}
-              </ToggleButtonGroup>
+              </ToggleButtonGroup> */}
               <canvas ref={chartRef} />
             </div>
           )}
-          {selectedChart === "KOSPI" && (
-            <div style={{ position: "relative", height: "40vh" }}>
-              <h3>KOSPI</h3>
+          {/* {selectedChart === "KOSPI" && (
+            <div style={{ position: "relative", height: "30vh" }}>
+              <h3 style={{ textAlign: "center" }}>KOSPI</h3>
               <canvas ref={KOSPIchartRef} />
             </div>
-          )}
+          )} */}
         </div>
       ) : (
         <Box

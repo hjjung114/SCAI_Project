@@ -7,10 +7,18 @@
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
+/* @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+} */
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center items vertically */
+  justify-content: center; /* Center items horizontally */
+  height: 100vh; /* Optionally, set the container's height to the viewport height */
 }
 
 .App-header {
@@ -37,7 +45,19 @@
   }
 }
 
-Button
-{
+Button {
   align-items: center;
+}
+
+.footer {
+  background-color: rgba(149, 142, 142, 0.878);
+  padding: 15px;
+  text-align: center;
+  /* position: absolute; */
+  bottom: 0;
+  width: 100%;
+}
+
+.footer-content {
+  color: #ffffff;
 }

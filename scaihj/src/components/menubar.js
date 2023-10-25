@@ -23,18 +23,24 @@ export default function MenuBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: "grey" }}>
       <Container maxWidth="xl">
-        <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+        <Toolbar
+          disableGutters
+          sx={{
+            display: { xs: "flex" },
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
           <Typography
-            variant="h6"
+            variant="h4"
             noWrap
             component="a"
-            href="#app-bar-with-responsive-menu"
+            href="/"
             sx={{
               mr: 2,
-              display: { xs: "none", md: "flex" },
+              // display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
@@ -42,35 +48,35 @@ export default function MenuBar() {
               textDecoration: "none",
             }}
           >
-            <a href="/"> LOGO</a>
+            SYNERGYCAP
           </Typography>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
+          <Box
             sx={{
-              mr: 2,
-              display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
+              // display: { xs: "flex", md: "none" }
+            }}
+          />
+          <Box
+            sx={{
+              flexGrow: 1,
+              // display: { xs: "flex", md: "none" }
             }}
           >
-            LOGO
-          </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 component={Link}
                 to={page}
                 key={page}
                 onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
+                justifyContent="flex-end"
+                alignItems="flex-end"
+                display="flex"
+                sx={{
+                  my: 2,
+                  // flexGrow: 1,
+                  color: "white",
+                  // display: { xs: "block", md: "none" },
+                }}
               >
                 {page}
               </Button>
