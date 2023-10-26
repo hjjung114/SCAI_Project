@@ -52,14 +52,10 @@ export default function MenuBar() {
           </Typography>
           <Box
             sx={{
-              flexGrow: 1,
-              // display: { xs: "flex", md: "none" }
-            }}
-          />
-          <Box
-            sx={{
-              flexGrow: 1,
-              // display: { xs: "flex", md: "none" }
+              display: "flex",
+              justifyContent: "flex-end",
+              flexGrow: 1, // 영역을 늘려 전체 폭을 차지하도록 설정
+              // 추가 스타일을 필요에 따라 정의할 수 있습니다.
             }}
           >
             {pages.map((page) => (
@@ -76,6 +72,7 @@ export default function MenuBar() {
                   // flexGrow: 1,
                   color: "white",
                   // display: { xs: "block", md: "none" },
+                  // marginRight: index < pages.length - 1 ? 5 : 0, // 간격 조절
                 }}
               >
                 {page}

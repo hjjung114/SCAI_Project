@@ -5,6 +5,7 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableRow from "@mui/material/TableRow";
 import { TableHead } from "@mui/material";
+import Typography from "@mui/material/Typography";
 
 const CompanyDetail = ({ inputValue1 }) => {
   const [data, setData] = useState(null);
@@ -69,7 +70,9 @@ const CompanyDetail = ({ inputValue1 }) => {
               </TableRow>
               <TableRow>
                 <TableCell padding="none" align="center">
-                  시가총액
+                  <Typography style={{ fontWeight: "bold" }}>
+                    시가총액
+                  </Typography>
                 </TableCell>
                 <TableCell padding="none" align="right">
                   <p>{formatNumber(data.marketCap)}</p>
@@ -77,7 +80,9 @@ const CompanyDetail = ({ inputValue1 }) => {
               </TableRow>
               <TableRow>
                 <TableCell padding="none" align="center">
-                  상장 주식 수
+                  <Typography style={{ fontWeight: "bold" }}>
+                    상장 주식 수
+                  </Typography>
                 </TableCell>
                 <TableCell padding="none" align="right">
                   <p>{formatNumber(data.listedStocks)}</p>

@@ -9,8 +9,6 @@ import {
   LineElement,
   Legend,
 } from "chart.js";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
@@ -19,8 +17,8 @@ import zoomPlugin from "chartjs-plugin-zoom";
 const ChartComponent = ({ selectedChart }) => {
   let chartInstance = useRef(null);
   const chartRef = useRef(null);
-  let KOSPIchartInstance = useRef(null);
-  const KOSPIchartRef = useRef(null);
+  // let KOSPIchartInstance = useRef(null);
+  // const KOSPIchartRef = useRef(null);
   const [period, setPeriod] = useState("month");
   const [chartData, setChartData] = useState({
     labels: [],
@@ -74,7 +72,8 @@ const ChartComponent = ({ selectedChart }) => {
       LinearScale,
       PointElement,
       LineElement,
-      Tooltip
+      Tooltip,
+      zoomPlugin
     );
 
     if (chartInstance.current) {
@@ -174,26 +173,21 @@ const ChartComponent = ({ selectedChart }) => {
             position: "bottom",
             labels: {
               usePointStyle: true, //<-- 동그라미 모양
-              // pointStyleWidth: 10,
             },
           },
           zoom: {
             limits: {
-              // x: { min: 0, max: "2023-09-14" },
               y1: { min: 40000, max: 200000 },
               y: { min: 50000, max: 75000 },
             },
             zoom: {
               wheel: {
                 enabled: true,
-                speed: 0.01,
+                // speed: 0.01,
               },
               drag: {
                 enabled: true,
               },
-              // pinch: {
-              //   enabled: true,
-              // },
             },
           },
         },
